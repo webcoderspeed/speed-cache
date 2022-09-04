@@ -11,6 +11,4 @@ const logger = pino({
   timestamp: () => `,"time":" ${format(new Date(), 'PPPPpppp')}"`,
 });
 
-logger.info('hi')
-
 export default logger;

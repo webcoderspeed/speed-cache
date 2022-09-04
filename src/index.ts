@@ -1,5 +1,6 @@
-import SpeedCache from "./utils/db";
+import SpeedCache from './utils/db';
+import logger from './utils/logger';
 
-export {
-  SpeedCache
-}
+logger.info(`Connected to Speed Cache`);
+
+export { SpeedCache };
