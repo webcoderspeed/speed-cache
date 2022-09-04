@@ -1,22 +1,22 @@
 import express from 'express';
+import { ICreateServer } from '../../types/server.types';
 import logger from '../logger';
 import { errorHandler, notFound } from './middlewares/error.middlewares';
 import routes from './routes/routes';
 
-
-const createServer = (cache: unknown) => {
+const createServer = ({ cache, options }: ICreateServer) => {
   const app = express();
 
   // setting up body parser
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-
-  const PORT = 12996
+  const PORT = options?.port ? options.port : 12996;
 
   app.listen(PORT, async () => {
-    logger.info(`Speed Cache is running at port http://localhost:${PORT} is live`);
-
+    logger.info(
+      `SpeedCache server is running at port http://localhost:${PORT}`
+    );
 
     routes(app, cache);
 
@@ -24,6 +24,6 @@ const createServer = (cache: unknown) => {
     app.use(notFound);
     app.use(errorHandler);
   });
-}
+};
 
 export default createServer;

@@ -1,5 +1,6 @@
-import { Database, DBKeyType } from '../types/db.types';
-class SpeedCache<K extends DBKeyType, T> implements Database<K, T> {
+import { IDatabase, IDBKeyType } from '../../types/db.types';
+import logger from '../logger';
+export class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
   protected db: Record<K, T> = {} as Record<K, T>;
 
   async get(id: K): Promise<T> {
@@ -32,4 +33,16 @@ class SpeedCache<K extends DBKeyType, T> implements Database<K, T> {
   }
 }
 
-export default SpeedCache;
+const SpeedCacheClient = async () => {
+  const { set, get, setEx, del } = new SpeedCache();
+
+  logger.info(`Connected to Speed Cache`);
+  return {
+    set,
+    get,
+    setEx,
+    del,
+  };
+};
+
+export default SpeedCacheClient;

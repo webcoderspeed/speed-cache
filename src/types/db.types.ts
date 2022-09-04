@@ -1,10 +1,10 @@
-export interface Database<K, T> {
+export interface IDatabase<K, T> {
   get(id: K): Promise<T>;
   set(id: K, value: T): Promise<void>;
   setEx(id: K, value: T, expiry: number): Promise<void>;
   del(id: K): Promise<void>;
-  getKeys(): Promise<[string] | undefined>
+   getKeys(): Promise<[string] | undefined>
 }
 
-export type DBKeyType = string | number | symbol;
+export type IDBKeyType = string | number | symbol;
 
