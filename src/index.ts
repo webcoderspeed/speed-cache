@@ -1,5 +1,5 @@
-import SpeedCacheClient from './utils/db/db';
-import createServer from './utils/server/createServer'
+import SpeedCache from './utils/db';
+import logger from './utils/logger';
 
-
-export { SpeedCacheClient, createServer };
+logger.info('Speed Cache Connected successfully');
+export { SpeedCache };
