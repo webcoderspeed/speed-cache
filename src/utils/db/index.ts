@@ -34,18 +34,22 @@ class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
     }
   }
 
-  async get(id: K): Promise<T> {
-    return this.db[id];
-  }
-
-  async set(id: K, value: T): Promise<void> {
-    this.db[id] = value;
+  private writeFile() {
     fs.writeFile(this.jsonPath, JSON.stringify(this.db), 'utf-8', err => {
         if (err) {
             logger.error(err, 'Error writing file');
             throw Error();
         }
     });
+  }
+
+  async get(id: K): Promise<T> {
+    return this.db[id];
+  }
+
+  async set(id: K, value: T): Promise<void> {
+    this.db[id] = value;
+    this.writeFile()
   }
 
   async setEx(id: K, value: T, expiry: number): Promise<void> {
@@ -58,6 +62,7 @@ class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
 
   async del(id: K): Promise<void> {
     delete this.db[id];
+    this.writeFile()
   }
 
   async getKeys(): Promise<[string] | undefined> {
