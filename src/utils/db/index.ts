@@ -4,32 +4,33 @@ import fs from 'fs'
 import logger from '../logger'
 class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
   protected db: Record<K, T> = {} as Record<K, T>;
+  protected jsonPath: string;
 
   constructor() {
     dotenv.config()
     const path = process.env.JSON_PATH;
     if(!path){
-        logger.error(null, 'JSON_PATH was not find.')
-        throw Error()
+        logger.error(null, 'JSON_PATH was not find.');
+        throw Error();
     }
-
-    if(fs.existsSync(path)){
-        fs.readFile(path, 'utf-8', (err, data) => {
+    this.jsonPath = path;
+    if(fs.existsSync(this.jsonPath)){
+        fs.readFile(this.jsonPath, 'utf-8', (err, data) => {
             if (err) {
-                logger.error(err, 'File read failed')
+                logger.error(err, 'Error reading file');
                 return;
             }
             Object.entries(JSON.parse(data)).forEach(ent  => {
-                this.db[ent[0] as K] = ent[1] as T
-            })
+                this.db[ent[0] as K] = ent[1] as T;
+            });
         })
     } else {
-        fs.writeFile(path, '{}', 'utf-8', err => {
+        fs.writeFile(this.jsonPath, '{}', 'utf-8', err => {
             if (err) {
-                logger.error(err, 'Error writing file')
-                throw Error()
+                logger.error(err, 'Error writing file');
+                throw Error();
             }
-        })
+        });
     }
   }
 
@@ -39,6 +40,12 @@ class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
 
   async set(id: K, value: T): Promise<void> {
     this.db[id] = value;
+    fs.writeFile(this.jsonPath, JSON.stringify(this.db), 'utf-8', err => {
+        if (err) {
+            logger.error(err, 'Error writing file');
+            throw Error();
+        }
+    });
   }
 
   async setEx(id: K, value: T, expiry: number): Promise<void> {
