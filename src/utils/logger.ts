@@ -1,5 +1,5 @@
-import pino from 'pino';
-import {format} from 'date-fns';
+import pino from 'pino'
+import { format } from 'date-fns'
 
 const logger = pino({
   transport: {
@@ -9,6 +9,6 @@ const logger = pino({
     pid: false,
   },
   timestamp: () => `,"time":" ${format(new Date(), 'PPPPpppp')}"`,
-});
+})
 
-export default logger;
+export default logger
