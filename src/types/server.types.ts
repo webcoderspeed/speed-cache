@@ -1,7 +1,7 @@
-import SpeedCache from "../utils/db";
+import SpeedCache from '../utils/db'
 
 export interface ICreateServer {
-  cache: InstanceType<typeof SpeedCache>;
+  cache: InstanceType<typeof SpeedCache>
   options?: {
     port?: number
   }
