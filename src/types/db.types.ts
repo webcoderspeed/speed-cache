@@ -3,7 +3,6 @@ export interface IDatabase<K, T> {
   set(id: K, value: T): Promise<void>
   setEx(id: K, value: T, expiry: number): Promise<void>
   del(id: K): Promise<void>
-  getKeys(): Promise<[string] | undefined>
 }
 
 export type IDBKeyType = string | number | symbol
