@@ -73,7 +73,7 @@ class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
     this.writeFile()
   }
 
-  protected async getKeys(): Promise<[string] | undefined> {
+  async getKeys(): Promise<[string] | undefined> {
     const keys = Object.keys(this.db);
     if (keys.length) {
       return keys as [string];
