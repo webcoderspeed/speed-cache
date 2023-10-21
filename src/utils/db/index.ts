@@ -51,28 +51,28 @@ class SpeedCache<K extends IDBKeyType, T> implements IDatabase<K, T> {
     })
   }
 
-  async get(id: K): Promise<T> {
-    return this.db[id]
+  async get(key: K): Promise<T> {
+    return this.db[key]
   }
 
   /**
    *
-   * @param id key of the record
+   * @param key key of the record
    * @param value value of the record
    * @param expiry expiry time in seconds
    */
-  async set(id: K, value: T, expiry = 0) {
+  async set(key: K, value: T, expiry = 0) {
     if (expiry !== 0) {
       setTimeout(async () => {
-        await this.del(id)
+        await this.del(key)
       }, expiry * 1000)
     }
-    this.db[id] = value
+    this.db[key] = value
     this.writeFile()
   }
 
-  async del(id: K): Promise<void> {
-    delete this.db[id]
+  async del(key: K): Promise<void> {
+    delete this.db[key]
     this.writeFile()
   }
 
